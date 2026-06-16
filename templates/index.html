@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BigQuery Release Notes Console</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="console-container">
+        <!-- Header -->
+        <header class="console-header">
+            <div class="brand">
+                <span class="terminal-prompt">$</span>
+                <h1>BQ_RELEASE_NOTES_FEED</h1>
+            </div>
+            <div class="actions">
+                <button id="refresh-btn" class="btn btn-primary" title="Refresh Release Notes">
+                    <i id="refresh-icon" class="fa-solid fa-arrows-rotate"></i>
+                    <span>REFRESH</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Workspace Grid -->
+        <main class="console-body">
+            <!-- Left Pane: Release Notes List -->
+            <section class="pane feed-pane">
+                <div class="pane-header">
+                    <h2>FEED_LOG</h2>
+                    <span class="status-indicator online" id="feed-status">IDLE</span>
+                </div>
+                <div class="search-bar-container">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="search-input" placeholder="Search entries..." autocomplete="off">
+                </div>
+                <div class="feed-list" id="feed-list">
+                    <!-- Dynamic feed items go here -->
+                    <div class="empty-state">
+                        <i class="fa-solid fa-spinner fa-spin"></i>
+                        <p>Initializing feed stream...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Pane: Release Note Details -->
+            <section class="pane detail-pane" id="detail-pane">
+                <div class="pane-header">
+                    <h2>INSPECTOR_PANEL</h2>
+                    <span class="status-indicator" id="detail-status">NO_SELECTION</span>
+                </div>
+                
+                <div class="detail-placeholder" id="detail-placeholder">
+                    <i class="fa-solid fa-terminal placeholder-icon"></i>
+                    <p>Select a log entry from the feed to inspect details and tweet.</p>
+                </div>
+
+                <div class="detail-content hidden" id="detail-content">
+                    <div class="detail-header-info">
+                        <span class="detail-date" id="doc-date">--</span>
+                        <h3 class="detail-title" id="doc-title">Select an Entry</h3>
+                    </div>
+                    
+                    <div class="detail-body-container">
+                        <div class="detail-body-html" id="doc-body">
+                            <!-- Rendered HTML content from Atom feed -->
+                        </div>
+                    </div>
+
+                    <div class="detail-actions">
+                        <a id="tweet-btn" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-tweet">
+                            <i class="fa-brands fa-x-twitter"></i>
+                            <span>TWEET THIS UPDATE</span>
+                        </a>
+                        <a id="original-link" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            <span>VIEW ORIGINAL</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer status bar -->
+        <footer class="console-footer">
+            <div class="footer-item">
+                <span class="label">STATUS:</span>
+                <span id="system-status" class="value text-success">ONLINE</span>
+            </div>
+            <div class="footer-item">
+                <span class="label">VERSION:</span>
+                <span class="value">v1.0.0</span>
+            </div>
+            <div class="footer-item hidden-mobile">
+                <span class="label">FEED_URL:</span>
+                <span class="value truncate">docs.cloud.google.com/feeds/bigquery-release-notes.xml</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Script -->
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
