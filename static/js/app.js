@@ -25,12 +25,42 @@ document.addEventListener('DOMContentLoaded', () => {
     const tweetBtn = document.getElementById('tweet-btn');
     const originalLink = document.getElementById('original-link');
     const systemStatus = document.getElementById('system-status');
+    
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+
+    // Theme Management
+    const initTheme = () => {
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+    };
+
+    const toggleTheme = () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateThemeIcon(newTheme);
+    };
+
+    const updateThemeIcon = (theme) => {
+        if (theme === 'light') {
+            themeIcon.className = 'fa-solid fa-moon';
+            themeToggle.title = 'Switch to Dark Mode';
+        } else {
+            themeIcon.className = 'fa-solid fa-sun';
+            themeToggle.title = 'Switch to Light Mode';
+        }
+    };
 
     // Event Listeners
     refreshBtn.addEventListener('click', fetchReleases);
     searchInput.addEventListener('input', handleSearch);
+    themeToggle.addEventListener('click', toggleTheme);
 
-    // Initial Fetch
+    // Initial Setup
+    initTheme();
     fetchReleases();
 
     // Fetch Release Notes from backend API
