@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Extract plain text snippet
-            const snippet = release.content.replace(/<[^>]*>/g, ' ').substring(0, 120) + '...';
+            const snippet = generateSnippet(release.content);
             
             // Format published date
             const formattedDate = formatDate(release.date);
@@ -255,5 +255,33 @@ document.addEventListener('DOMContentLoaded', () => {
             .replace(/>/g, '&gt;')
             .replace(/"/g, '&quot;')
             .replace(/'/g, '&#039;');
+    }
+
+    // Generate a clean snippet ending at sentence or word boundary
+    function generateSnippet(content) {
+        // Strip HTML and clean whitespace
+        const plain = content.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+        if (!plain) return '';
+
+        // Match the first sentence
+        const sentenceRegex = /[^.!?]+[.!?](\s|$)/;
+        const match = plain.match(sentenceRegex);
+        
+        if (match) {
+            const firstSentence = match[0].trim();
+            if (firstSentence.length <= 150) {
+                return firstSentence;
+            }
+        }
+
+        // Fallback: Truncate to 150 characters at a word boundary
+        if (plain.length <= 150) return plain;
+        
+        let truncated = plain.substring(0, 150);
+        const lastSpace = truncated.lastIndexOf(' ');
+        if (lastSpace > 0) {
+            truncated = truncated.substring(0, lastSpace);
+        }
+        return truncated + '...';
     }
 });
